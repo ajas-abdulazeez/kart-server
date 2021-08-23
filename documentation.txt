@@ -1,0 +1,15 @@
+npm init 
+
+mpm i express
+
+express (documentation)
+postmon // for checking api s
+
+npm install nodemon
+
+
+https://dev.to/itachiuchiha/building-and-running-sql-queries-with-knex-js-55d4
+
+https://devhints.io/knex
+
+https://www.youtube.com/watch?v=mbsmsi7l3r4
