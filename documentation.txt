@@ -14,4 +14,16 @@ https://devhints.io/knex
 
 https://www.youtube.com/watch?v=mbsmsi7l3r4
 
-database
+
+-------------------------------------------------------------------------
+database 
+     Database name: kart_db
+
+        users =>
+                user_id  int(15) AUTO_INCREMENT primary, unique		
+		        user_name	varchar(25)	utf8mb4_general_ci			
+		        phone_number	int(10)				
+		        password	varchar(20)	utf8mb4_general_ci			
+	    	    created_date	date
+
+
