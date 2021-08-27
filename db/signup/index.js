@@ -1,10 +1,10 @@
 
-import {insertData } from '../crud.js';
+const crud = require("../crud");
 
 var usertesting = {
-    user_name: "sushil",
+    user_name: "sushilpeter",
     phone_number: "9745773603",
     password: "32EFD34"
 };
 
-insertData("users",usertesting);
+crud.insertData("users",usertesting);

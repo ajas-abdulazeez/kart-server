@@ -73,10 +73,8 @@ const deleteData = (tableName, options = { filteringConditions: [] }) => {
 }
 
 
-exports.insertData = insertData;
-exports.updateData = updateData;
-exports.selectData = selectData;
-exports.deleteData = deleteData;
+module.exports={insertData ,updateData , selectData, deleteData};
+
 
 
 
