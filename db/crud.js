@@ -73,16 +73,13 @@ const deleteData = (tableName, options = { filteringConditions: [] }) => {
 }
 
 
+exports.insertData = insertData;
+exports.updateData = updateData;
+exports.selectData = selectData;
+exports.deleteData = deleteData;
 
 
 
-var usertesting = {
-    user_name: "HTML",
-    phone_number: "9745773603",
-    password: "32EFD34"
-};
-
-insertData("users",usertesting);
 
 
 /*updateData('users', {
