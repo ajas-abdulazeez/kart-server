@@ -39,6 +39,8 @@ const selectData = (tableName, options = { fields: [], filteringConditions: [] }
 
 
 
+
+
 const updateData = (tableName, options = { fields: {}, filteringConditions: [] }) => {
 
     const { fields, filteringConditions } = options
