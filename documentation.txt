@@ -4,7 +4,7 @@ mpm i express
 
 express (documentation)
 postmon // for checking api s
-
+npm i bcrypt
 npm install nodemon
 
 

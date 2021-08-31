@@ -2,18 +2,12 @@ var express = require('express')
 var app = express()
 app.use(express.json());
 const port = 5000;
+const auth = require("./db/auth");
+const products = require("./db/products");
 
 
-
-const user = {
-    username:"Akash",
-    password:"12345",
-    email_id:"abcd@gmail.com"
-}
-
-const categories = {
-    
-}
+console.log(auth);
+console.log(products);
 
 
 
@@ -25,21 +19,55 @@ app.post('/', (req,res) => {
 res.send(req.body)
 })
 
-app.post('/api/v1/signup', (req,res) => {
-res.send(req.body)
-})
 
-app.post('/api/v1/signin', (req,res) => {
+
+app.post('/api/v1/signup', (req,res) => {
+    console.log(req.body);  
     
-if(user.username === req.body.username && user.password === req.body.password){
-    res.send('Login sucess')
+    try{
+
+        let user = {
+            username:req.body.username,
+            email:req.body.email,
+            phone:req.body.phone,
+            password:req.body.password
+          }
+
+        auth.signup(user);
+        response = {  
+            message:"Account created successfully"
+            }; 
+        res.end(JSON.stringify(response));
+        }
+    catch{
+            res.status(500).send();
+        }
+   
+  })  
+
+
+
+
+app.post('/api/v1/signin', async (req,res) => {
     
-    return;  
-  }
-  
-    res.send('Login Failed')
-    
-})
+    try{
+        let user ={
+            username:req.body.username,
+            password:req.body.password
+            }
+        auth.signin(user);
+        console.log(response.message)
+        res.end(JSON.stringify(response));  
+    }
+    catch{
+        res.status(500).send();
+        }
+
+ })  
+
+
+
+
 
 app.get('/api/v1/profile', (req,res) => {
 res.send(user)
@@ -98,7 +126,20 @@ app.get('/api/v1/chatbox', (req,res) => {
     })
 
 app.post('/api/v1/upload_form', (req,res) => {
+    
+    var add_product = {
+        user_id: "3",
+        product_name: "samsung",
+        seller_name: "32EFD34",
+        price:"123",
+        quantity: "12",
+        product_description: "hello this is a product",
+        category:"nothing ",
+        product_images:"123" //here json is needed
+    };
+    products.addproduct(add_product);
     res.send()
+
     })
 
 app.post('/api/v1/update_username', (req,res) => {
@@ -125,13 +166,7 @@ app.get('/api/v1/product_discripition', (req,res) => {
     res.send()
     })
 
-app.get('/api/v1/product_quantity', (req,res) => {
-    res.send()
-    })
 
-app.get('/api/v1/product_features', (req,res) => {
-    res.send()
-    })
 
 app.get('/api/v1/product_ratting', (req,res) => {
     res.send()
@@ -140,3 +175,7 @@ app.get('/api/v1/product_ratting', (req,res) => {
 app.listen(port, () => {
 console.log(`Example app listening at http://localhost:${port}`)
 })
+
+//signin signup otp productlist forgetpsswrd individualprdtdetails 
+
+//github testihg
