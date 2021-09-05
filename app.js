@@ -4,10 +4,11 @@ app.use(express.json());
 const port = 5000;
 const auth = require("./db/auth");
 const products = require("./db/products");
+const userfunction = require ("./db/users")
 
 
-console.log(auth);
-console.log(products);
+console.log(userfunction);
+
 
 
 
@@ -145,10 +146,12 @@ app.get('/api/v1/chatbox', (req,res) => {
 
 
 app.post('/api/v1/update_username', (req,res) => {
+    userfunction.update_username(req.body);
     res.send()
     })
 
 app.post('/api/v1/update_emailid', (req,res) => {
+    userfunction.update_email(req.body);
     res.send()
     })
 
