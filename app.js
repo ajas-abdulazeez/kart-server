@@ -83,7 +83,7 @@ app.get('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
     })
     
 
-app.post('/api/v1/rating_products', async(req,res) => {
+app.post('/api/v1/rating_products',auth.authenticateToken, async(req,res) => {
     const data = req.body                                 //rating
     const result = await products.rateproduct(data)
     res.send(result)
@@ -102,7 +102,7 @@ app.get('/api/v1/sell', (req,res) => {
     
     })
 
-app.get('/api/v1/categories', async(req,res) => {
+app.get('/api/v1/categories',auth.authenticateToken, async(req,res) => {
     const result = await products.categories()
     res.send(result)
     })
@@ -139,19 +139,19 @@ app.get('/api/v1/chatbox', (req,res) => {
     })
 
 
-app.post('/api/v1/update_username', async(req,res) => {
+app.post('/api/v1/update_username',auth.authenticateToken, async(req,res) => {
     const data = req.body                                                  //id & New username
     const result = await userfunction.update_username(data);
     res.send(result)
     })
 
-app.post('/api/v1/update_emailid', async(req,res) => {
+app.post('/api/v1/update_emailid',auth.authenticateToken, async(req,res) => {
     const data = req.body                                                 //id & New email
     const result = await userfunction.update_email(data);
     res.send(result)                                                             
     })
 
-app.post('/api/v1/update_phone', async(req,res) => {
+app.post('/api/v1/update_phone',auth.authenticateToken, async(req,res) => {
     const data = req.body                                                  //id & phone_no
     const result = await userfunction.update_phno(data)
     res.send(result)
