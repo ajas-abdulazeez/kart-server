@@ -5,6 +5,8 @@ const port = 5000;
 const auth = require("./db/auth");
 const products = require("./db/products");
 const userfunction = require ("./db/users")
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 
 console.log(userfunction);
@@ -12,7 +14,7 @@ console.log(userfunction);
 
 
 
-app.get('/', (req,res) => {
+app.get('/',auth.authenticateToken, (req,res) => {
 res.send('hello world')
 })
 
@@ -40,9 +42,10 @@ app.post('/api/v1/signin', async (req,res) => {
     try{
 
     const user = req.body
+    
     const result = await auth.signin(user)
     res.send(result)
-    res.end()
+    
     
     }catch{
         res.status(500).send("Somthing went worng")
@@ -73,8 +76,8 @@ app.post('/api/v1/signin', async (req,res) => {
     })
 
 
-app.get('/api/v1/searchproducts', async(req,res) => {
-        const data = req.body
+app.get('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
+        const data = req.body                         //product_name
         const result = await products.searchproducts(data);
         res.send(result)
     })
@@ -88,7 +91,7 @@ app.post('/api/v1/rating_products', async(req,res) => {
 
 
 
-app.get('/api/v1/profile', async(req,res) => {
+app.get('/api/v1/profile',auth.authenticateToken, async(req,res) => {
     const id = req.body.user_id
     result = await userfunction.profile(id)
     res.send(result)
