@@ -2,17 +2,7 @@
 const crud = require("../crud");
 const bcrypt = require('bcrypt');
 
-let usertesting = {
-    username:"ajasabdulazeez",
-    email:"ajasasraloorkavu@gmal.com",
-    phone:9745773603,
-    password:"ajas123"
-  }
 
-let user ={
-    username:"ajasabdulazeez",
-    password:"$2b$10$lYIeyl9QpsHOpRfZLnobz.SfcXJ.0VPpGEzEAbx4GG.wDCXkUyX.y"
-}
 
 
 
@@ -31,6 +21,7 @@ const signup = async(usertesting)=> {
 
         let result = await crud.insertData("users",adduser);
         console.log(result)
+        return {data:"User added Successfully"}
     }
     catch{
         console.log("something went wrong")
@@ -40,6 +31,8 @@ const signup = async(usertesting)=> {
 
 
 const signin = async(user) =>{
+
+    try{
 
         let usercheck = await crud.selectData('users', {
             filteringConditions: [
@@ -58,8 +51,7 @@ const signin = async(user) =>{
             
                 if (await bcrypt.compare(user.password , usercheck[0].password)){
                     console.log("login success")
-                    return {status:true,
-                            data:"login success"};
+                    return {data:"login success"};
                     }
                 
                 else {
@@ -68,11 +60,16 @@ const signin = async(user) =>{
                             data:"wrong password"};
                     }
             }
+        }catch{
+            console.log("somthing went worng")
+            return{data:"somthing went wrong"}
+            
+        }
 
 }
 
 
-signin(user);
+
 
 module.exports ={signup, signin};
 

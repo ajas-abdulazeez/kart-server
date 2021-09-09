@@ -5,37 +5,60 @@ user={
     id:"27"
 }
 
-const update_username = async(_input) =>{
+const update_username = async(data) =>{
 
 let update_user_name = await crud.updateData('users', {
     fields: {
-        user_name: _input.username
+        user_name: data.username
     },
     filteringConditions: [
-        ['user_id', '=', _input.id]
+        ['user_id', '=', data.id]
     ]
+    
 })
-.then(update_user_name => {
-    console.log(update_user_name)
-    console.log("updated successfully");
-})
+    return{data:"Updated Successfull"}
+
 }
 
 
-const update_email = async(_input) =>{
+const update_email = async(data) =>{
 
     let update_email = await crud.updateData('users', {
         fields: {
-            email: _input.email
+            email: data.email
         },
         filteringConditions: [
-            ['user_id', '=', _input.id]
+            ['user_id', '=', data.id]
         ]
     })
-    .then(update_user_email => {
-        console.log(update_user_email)
-        console.log("updated email successfully");
-    })
+    return {data:"Updated Successfully"}
     }
 
-module.exports={update_username,update_email};
+const update_phno = async(data) =>{
+    let result = await crud.updateData('users',{
+        fields:{
+            phone_number:data.phone_no
+        },
+        filteringConditions:[
+            ['user_id', '=',data.id]
+        ]
+    })
+    return {data:"Updated Succesfully"}
+}
+
+const profile = async(id)=>{
+    let user = await crud.selectData('users',{
+        filteringConditions:[
+            ['user_id',id]
+        ]
+    })
+    const result = {
+        username: user[0].user_name,
+        phone_no: user[0].phone_number,
+        created_date:user[0].created_date,
+        email:user[0].email
+    }
+    return result
+}
+
+module.exports={update_username,update_email,profile,update_phno};
