@@ -23,7 +23,8 @@ const signup = async(usertesting)=> {
         return {data:"User added Successfully"}
     }
     catch{
-        console.log("something went wrong")
+        console.log("something went wrong checking")
+        return {data:"error in adding"}
     }
 }
 

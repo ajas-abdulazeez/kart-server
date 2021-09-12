@@ -15,8 +15,7 @@ const insertData = (tableName, data) => {
 
     return db(tableName)
             .insert(data)
-            .then(resp => resp)
-            .finally(() => db.destroy());
+            .then(resp => resp);
 }
 
 
@@ -34,7 +33,25 @@ const selectData = (tableName, options = { fields: [], filteringConditions: [] }
 
             })
             .then(data => data)
-            .finally(() => db.destroy());
+            
+}
+
+const selectSortedData = (tableName, options = { fields: [], filteringConditions: [] , sortingcondition: []}) => {
+
+    const { fields, filteringConditions , sortingcondition } = options
+    
+
+    return db(tableName)
+            .select(fields)
+            .where(builder => {
+                filteringConditions.forEach(condition => {
+                    builder.where(...condition)
+                });
+
+            })
+            .orderBy(sortingcondition[0], sortingcondition[1])
+            .then(data => data)
+            
 }
 
 
@@ -54,7 +71,7 @@ const updateData = (tableName, options = { fields: {}, filteringConditions: [] }
             })
             .update(fields)
             .then(data => data)
-            .finally(() => db.destroy());
+            
 }
 
 
@@ -71,11 +88,11 @@ const deleteData = (tableName, options = { filteringConditions: [] }) => {
             })
             .del()
             .then(data => data)
-            .finally(() => db.destroy());
+            
 }
 
 
-module.exports={insertData ,updateData , selectData, deleteData};
+module.exports={insertData ,updateData , selectData, deleteData , selectSortedData};
 
 
 

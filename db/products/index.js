@@ -14,7 +14,7 @@ const addproduct = async(add_product) =>{
 
 const listproducts = async() =>{
 
-let listofproducts = await crud.selectData('products');
+let listofproducts = await crud.selectSortedData('products' , {sortingcondition:['product_id','desc'],fields: [], filteringConditions: []});
 console.log(listofproducts);
 return listofproducts;
 

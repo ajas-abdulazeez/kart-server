@@ -93,8 +93,11 @@ app.post('/api/v1/rating_products',auth.authenticateToken, async(req,res) => {
 
 app.get('/api/v1/profile',auth.authenticateToken, async(req,res) => {
     const id = req.body.user_id
+    console.log(id);
     result = await userfunction.profile(id)
+    
     res.send(result)
+
 
 })
 
@@ -118,8 +121,10 @@ app.get('/api/v1/contact_us', (req,res) => {
     })
 
 
-app.get('/api/v1/featured_products', (req,res) => {
-res.send()
+app.get('/api/v1/featured_products', async (req,res) => {
+    const result = await products.listproducts()
+    res.send(result)
+
 })
 
 app.get('/api/v1/recently_added_products', (req,res) => {
