@@ -1,9 +1,5 @@
 const crud = require("../crud");
 
-user={
-    username:"sukumarakurupp",
-    id:"27"
-}
 
 const update_username = async(data) =>{
 

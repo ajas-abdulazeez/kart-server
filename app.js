@@ -41,14 +41,20 @@ app.post('/api/v1/signup', async(req,res) => {
 app.post('/api/v1/signin', async (req,res) => {
     try{
 
-    const user = req.body
+    const user_data = req.body
     
-    const result = await auth.signin(user)
-    res.send(result)
+    const result = await auth.signin(user_data)
+    res.send(result.accessToken)
+    const userid = []
+    userid.push({id:result.id})
+    console.log(userid)
+
+    
+
     
     
     }catch{
-        res.status(500).send("Somthing went worng")
+        res.status(500).send("API error:Somthing went wrong")
         
     }
 
@@ -76,7 +82,7 @@ app.post('/api/v1/signin', async (req,res) => {
     })
 
 
-app.get('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
+app.post('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
         const data = req.body                         //product_name
         const result = await products.searchproducts(data);
         res.send(result)
@@ -92,10 +98,9 @@ app.post('/api/v1/rating_products',auth.authenticateToken, async(req,res) => {
 
 
 app.get('/api/v1/profile',auth.authenticateToken, async(req,res) => {
-    const id = req.body.user_id
-    console.log(id);
+    const id = userid[0].id
+    // console.log(id);
     result = await userfunction.profile(id)
-    
     res.send(result)
 
 
@@ -145,19 +150,19 @@ app.get('/api/v1/chatbox', (req,res) => {
 
 
 app.post('/api/v1/update_username',auth.authenticateToken, async(req,res) => {
-    const data = req.body                                                  //id & New username
+    const data  = {username: req.body.username, id:userid[0].id}    // New username
     const result = await userfunction.update_username(data);
     res.send(result)
     })
 
 app.post('/api/v1/update_emailid',auth.authenticateToken, async(req,res) => {
-    const data = req.body                                                 //id & New email
+    const data = {email:req.body.email, id:userid[0].id}                                              //id & New email
     const result = await userfunction.update_email(data);
     res.send(result)                                                             
     })
 
 app.post('/api/v1/update_phone',auth.authenticateToken, async(req,res) => {
-    const data = req.body                                                  //id & phone_no
+    const data = {phone_no:req.body.phone_no, id:userid[0].id}                                                 //id & phone_no
     const result = await userfunction.update_phno(data)
     res.send(result)
     })

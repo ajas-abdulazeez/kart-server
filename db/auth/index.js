@@ -30,30 +30,36 @@ const signup = async(usertesting)=> {
 
 
 
-const signin = async(user) =>{
+const signin = async(user_data) =>{
+    const username = user_data.username
+    const user = {name:username}
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
 
     try{
 
         let usercheck = await crud.selectData('users', {
             filteringConditions: [
-                ['user_name', '=', user.username]
+                ['user_name', '=', username]
                 
             ]
             
-        })
+        
+        }) 
+        
+       
             if (!usercheck.length){
                 console.log("no users found");
                 return {status:false,
                         data:"no users"};
+                        
             }
 
             else{
             
-                if (await bcrypt.compare(user.password , usercheck[0].password)){
+                if (await bcrypt.compare(user_data.password , usercheck[0].password)){
                     console.log("login success")
-                    return{accessToken : accessToken}
-                    // return {data:"login success"};
+                    return{accessToken : accessToken, id:usercheck[0].user_id}
+                    return {data:"login success"};
                     }
                 
                 else {
@@ -62,11 +68,16 @@ const signin = async(user) =>{
                             data:"wrong password"};
                     }
             }
-        }catch{
+            
+            
+        }
+        catch{
             console.log("somthing went worng")
             return{data:"somthing went wrong"}
             
         }
+
+        
 
 }
 
