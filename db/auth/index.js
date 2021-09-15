@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+datas={
+    username:"rojin",
+    password:"12345"
+}
+
 
 
 const signup = async(usertesting)=> {

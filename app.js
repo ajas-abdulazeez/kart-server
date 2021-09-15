@@ -1,6 +1,8 @@
 var express = require('express')
 var app = express()
 app.use(express.json());
+const cors =require("cors");
+app.use(cors())
 const port = 5000;
 const auth = require("./db/auth");
 const products = require("./db/products");
@@ -44,7 +46,8 @@ app.post('/api/v1/signin', async (req,res) => {
     const user_data = req.body
     
     const result = await auth.signin(user_data)
-    res.send(result.accessToken)
+    res.send(result)
+    
     const userid = []
     userid.push({id:result.id})
     console.log(userid)
@@ -65,20 +68,6 @@ app.post('/api/v1/signin', async (req,res) => {
      const add_product = req.body
      const result = await products.addproduct(add_product)
      res.send(result)
-    
-    // var add_product = {
-        // user_id: "3",
-        // product_name: "samsung",
-        // seller_name: "32EFD34",
-        // price:"123",
-        // quantity: "12",
-        // product_description: "hello this is a product",
-        // category:"nothing ",
-        // product_images:"123" //here json is needed
-    // };
-    // products.addproduct(add_product);
-    // res.send()
-
     })
 
 
