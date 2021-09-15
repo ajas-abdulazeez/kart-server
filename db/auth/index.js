@@ -63,8 +63,8 @@ const signin = async(user_data) =>{
             
                 if (await bcrypt.compare(user_data.password , usercheck[0].password)){
                     console.log("login success")
-                    return{accessToken : accessToken, id:usercheck[0].user_id}
-                    return {data:"login success"};
+                    return{accessToken : accessToken, id:usercheck[0].user_id ,data:"login success"}
+                    
                     }
                 
                 else {
