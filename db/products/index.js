@@ -5,7 +5,15 @@ const crud = require("../crud");
 
 const addproduct = async(add_product) =>{
 
-    let products = await crud.insertData("products", addproduct);
+    productData={
+        product_name: add_product.product_name,
+        price:add_product.price,
+        quantity:add_product.quantity,
+        category:add_product.category,
+        product_description:add_product.product_description
+    }
+
+    let products = await crud.insertData("products", productData);
     console.log("product added successfully1")
     return{data:"Added Successfully"}
 }
