@@ -9,6 +9,8 @@ const products = require("./db/products");
 const userfunction = require ("./db/users")
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+var express = require('express'),
+var Busboy = require('busboy')
 
 
 console.log(userfunction);
@@ -67,6 +69,19 @@ app.post('/api/v1/signin', async (req,res) => {
  app.post('/api/v1/upload_form', async(req,res) => {
      const add_product = req.body
      const result = await products.addproduct(add_product)
+     var busboy = new Busboy({ headers: req.headers });
+     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+ 
+      var saveTo = path.join(__dirname, 'uploads/' + filename);
+      file.pipe(fs.createWriteStream(saveTo));
+    });
+ 
+    busboy.on('finish', function() {
+      res.writeHead(200, { 'Connection': 'close' });
+      res.end("That's all folks!");
+    });
+     
+    return req.pipe(busboy);    
      res.send(result)
     })
 
