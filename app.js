@@ -80,9 +80,9 @@ app.post('/api/v1/signin', async (req,res) => {
       res.writeHead(200, { 'Connection': 'close' });
       res.end("That's all folks!");
     });
-     
+    res.send(result) 
     return req.pipe(busboy);    
-     res.send(result)
+     
     })
 
 
