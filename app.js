@@ -95,6 +95,12 @@ app.post('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
         const result = await products.searchproducts(data);
         res.send(result)
     })
+
+app.get('/api/v1/viewproducts/:product_id', async(req,res) => {
+        const {product_id} = req.params;                      
+        const result = await products.showproducts(product_id);
+        res.send(result)
+    })
     
 
 app.post('/api/v1/rating_products',auth.authenticateToken, async(req,res) => {

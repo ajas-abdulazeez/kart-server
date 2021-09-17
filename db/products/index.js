@@ -47,6 +47,29 @@ const searchproducts = async(data) =>{
     }
 }
 
+const showproducts = async(prodcut_id) =>{
+    try{
+
+       let product = await crud.selectData('products', {
+           filteringConditions: [
+               ['product_id', '=', prodcut_id]
+            
+           ]
+        
+       })
+       // console.log(searchdata);
+       if (product.length){
+        return product[0];
+       }
+       return {}
+       
+    }catch{
+        
+        return{data:"product not found"}
+    }
+}
+
+
 
 const rateproduct = async(data) =>{
 
@@ -74,4 +97,4 @@ const delete_product = async(data) =>{
 
 
 
-module.exports ={addproduct, listproducts , searchproducts , rateproduct , categories,delete_product}
+module.exports ={addproduct, listproducts , showproducts, searchproducts , rateproduct , categories,delete_product}
