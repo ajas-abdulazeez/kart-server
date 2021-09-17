@@ -9,8 +9,11 @@ const products = require("./db/products");
 const userfunction = require ("./db/users")
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-var express = require('express'),
+var express = require('express');
 var Busboy = require('busboy')
+var path = require('path'),
+var fs = require('fs');
+ 
 
 
 console.log(userfunction);
@@ -69,6 +72,7 @@ app.post('/api/v1/signin', async (req,res) => {
  app.post('/api/v1/upload_form', async(req,res) => {
      const add_product = req.body
      const result = await products.addproduct(add_product)
+     
      var busboy = new Busboy({ headers: req.headers });
      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
  
@@ -114,8 +118,9 @@ app.get('/api/v1/sell', (req,res) => {
     
     })
 
-app.get('/api/v1/categories',auth.authenticateToken, async(req,res) => {
+app.get('/api/v1/categories', async(req,res) => {
     const result = await products.categories()
+    console.log(result)
     res.send(result)
     })
 
