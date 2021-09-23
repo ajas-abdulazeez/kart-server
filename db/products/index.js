@@ -10,7 +10,8 @@ const addproduct = async(add_product) =>{
         price:add_product.price,
         quantity:add_product.quantity,
         category:add_product.category,
-        product_description:add_product.product_description
+        product_description:add_product.product_description,
+        product_images:add_product.product_images
     }
 
     let products = await crud.insertData("products", productData);
@@ -23,9 +24,7 @@ const addproduct = async(add_product) =>{
 const listproducts = async() =>{
 
 let listofproducts = await crud.selectSortedData('products' , {sortingcondition:['product_id','desc'],fields: [], filteringConditions: []});
-console.log(listofproducts);
 return listofproducts;
-
 }
 
 
@@ -37,27 +36,22 @@ const searchproducts = async(data) =>{
                ['product_name', 'LIKE', "%"+data.product_name+"%"]
             
            ]
-        
        })
        // console.log(searchdata);
        return searchdata;
     }catch{
-        
         return{data:"Somthing went worng"}
     }
 }
+
 
 const showproducts = async(prodcut_id) =>{
     try{
 
        let product = await crud.selectData('products', {
            filteringConditions: [
-               ['product_id', '=', prodcut_id]
-            
-           ]
-        
+               ['product_id', '=', prodcut_id]]
        })
-       // console.log(searchdata);
        if (product.length){
         return product[0];
        }
@@ -79,12 +73,10 @@ const rateproduct = async(data) =>{
 }
 
 const categories = async() =>{
-
     let listcategories = await crud.selectData('category');
-    // console.log(listcategories);
     return listcategories;
-    
     }
+
 
 const delete_product = async(data) =>{
     const result = await crud.deleteData('products',{

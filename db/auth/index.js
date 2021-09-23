@@ -4,14 +4,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-datas={
-    username:"rojin",
-    password:"12345"
-}
-
-
 
 const signup = async(usertesting)=> {
+    
     try {
         const salt = await bcrypt.genSalt();
         const hashedpassword = await bcrypt.hash(usertesting.password, salt);
@@ -47,11 +42,8 @@ const signin = async(user_data) =>{
                 ['user_name', '=', username]
                 
             ]
-            
-        
         }) 
         
-       
             if (!usercheck.length){
                 console.log("no users found");
                 return {status:false,
@@ -81,8 +73,6 @@ const signin = async(user_data) =>{
             return{data:"somthing went wrong"}
             
         }
-
-        
 
 }
 

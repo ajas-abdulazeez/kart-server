@@ -10,13 +10,14 @@ const userfunction = require ("./db/users")
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 var express = require('express');
-var Busboy = require('busboy')
-// var path = require('path'),
-// var fs = require('fs');
+var upload = require ('express-fileupload')
+app.use(upload());
+const crypto = require('crypto');
+
  
 
 
-console.log(userfunction);
+
 
 
 
@@ -56,11 +57,7 @@ app.post('/api/v1/signin', async (req,res) => {
     const userid = []
     userid.push({id:result.id})
     console.log(userid)
-
-    
-
-    
-    
+ 
     }catch{
         res.status(500).send("API error:Somthing went wrong")
         
@@ -71,25 +68,24 @@ app.post('/api/v1/signin', async (req,res) => {
 
  app.post('/api/v1/upload_form', async(req,res) => {
      const add_product = req.body
-     const result = await products.addproduct(add_product)
-     
-     var busboy = new Busboy({ headers: req.headers });
-     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
- 
-      var saveTo = path.join(__dirname, 'uploads/' + filename);
-      file.pipe(fs.createWriteStream(saveTo));
-    });
- 
-    busboy.on('finish', function() {
-      res.writeHead(200, { 'Connection': 'close' });
-      res.end("That's all folks!");
-    });
+     let fileNames=[]
+    
+     Object.entries(req.files).forEach(element => {
+         console.log(element)
+         let randomValue = crypto.randomUUID()
+         fileNames.push(randomValue +".jpg")
+
+         req.files[element[0]].mv("./uploads/"+randomValue+".jpg").then((error)=>{
+               console.log(error)})
+     });
+  
+     add_product.product_images = JSON.stringify(fileNames);
+    const result = await products.addproduct(add_product)
     res.send(result) 
-    return req.pipe(busboy);    
-     
+    
     })
 
-
+ 
 app.post('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
         const data = req.body                         //product_name
         const result = await products.searchproducts(data);
@@ -126,7 +122,6 @@ app.get('/api/v1/sell', (req,res) => {
 
 app.get('/api/v1/categories', async(req,res) => {
     const result = await products.categories()
-    console.log(result)
     res.send(result)
     })
 
@@ -165,19 +160,19 @@ app.get('/api/v1/chatbox', (req,res) => {
 
 
 app.post('/api/v1/update_username',auth.authenticateToken, async(req,res) => {
-    const data  = {username: req.body.username, id:userid[0].id}    // New username
+    const data  = {username: req.body.username, id:userid[0].id} 
     const result = await userfunction.update_username(data);
     res.send(result)
     })
 
 app.post('/api/v1/update_emailid',auth.authenticateToken, async(req,res) => {
-    const data = {email:req.body.email, id:userid[0].id}                                              //id & New email
+    const data = {email:req.body.email, id:userid[0].id}                                      
     const result = await userfunction.update_email(data);
     res.send(result)                                                             
     })
 
 app.post('/api/v1/update_phone',auth.authenticateToken, async(req,res) => {
-    const data = {phone_no:req.body.phone_no, id:userid[0].id}                                                 //id & phone_no
+    const data = {phone_no:req.body.phone_no, id:userid[0].id}      
     const result = await userfunction.update_phno(data)
     res.send(result)
     })
@@ -189,24 +184,8 @@ app.post('/api/v1/buy_now', (req,res) => {
 
 
 
-    app.get('/api/v1/clothing', (req,res) => {
-        res.send()
-        })
-    
-    app.get('/api/v1/cars', (req,res) => {
-        res.send()
-        })
-    
-    app.get('/api/v1/food', (req,res) => {
-        res.send()
-        })
-
-
-
 app.listen(port, () => {
 console.log(`Example app listening at http://localhost:${port}`)
 })
 
-//signin signup otp productlist forgetpsswrd individualprdtdetails 
 
-//github testihg
