@@ -24,7 +24,11 @@ const addproduct = async(add_product) =>{
 const listproducts = async() =>{
 
 let listofproducts = await crud.selectSortedData('products' , {sortingcondition:['product_id','desc'],fields: [], filteringConditions: []});
-return listofproducts;
+
+
+return listofproducts.map(product=>{
+    return {...product,product_images:JSON.parse(product.product_images)}
+})
 }
 
 
@@ -38,19 +42,67 @@ const searchproducts = async(data) =>{
            ]
        })
        // console.log(searchdata);
-       return searchdata;
+      return searchdata
     }catch{
         return{data:"Somthing went worng"}
     }
 }
 
 
-const showproducts = async(prodcut_id) =>{
+const getRating =async(productId)=>{
+    try{
+
+        let ratingList = await crud.selectData('product_rating', {
+            filteringConditions: [
+                ['product_id', '=', productId]
+             
+            ]
+        })
+        
+      let ratingSum =0;
+      ratingList.forEach(rating => {
+          ratingSum += rating.rating
+
+      });
+      
+      return (ratingSum / ratingList.length )
+
+
+     }catch{
+         return{data:"Somthing went worng"}
+     }
+
+}
+
+
+const relatedproducts = async(category,id) =>{
+    try{
+
+       let searchDataByCategory = await crud.selectData('products', {
+           filteringConditions: [
+               ['category', 'LIKE', category],
+               ['product_id',"!=", id]
+
+            
+           ]
+       })
+       // console.log(searchdata);
+      return searchDataByCategory.map(product=>{
+        return {...product,product_images:JSON.parse(product.product_images)}
+    })
+    
+    }catch{
+        return{data:"Somthing went worng"}
+    }
+}
+
+
+const showproducts = async(product_id) =>{
     try{
 
        let product = await crud.selectData('products', {
            filteringConditions: [
-               ['product_id', '=', prodcut_id]]
+               ['product_id', '=', product_id]]
        })
        if (product.length){
         return product[0];
@@ -89,4 +141,4 @@ const delete_product = async(data) =>{
 
 
 
-module.exports ={addproduct, listproducts , showproducts, searchproducts , rateproduct , categories,delete_product}
+module.exports ={addproduct, listproducts ,getRating, showproducts,relatedproducts, searchproducts , rateproduct , categories,delete_product}

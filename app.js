@@ -13,6 +13,7 @@ var express = require('express');
 var upload = require ('express-fileupload')
 app.use(upload());
 const crypto = require('crypto');
+app.use(express.static("uploads"))
 
  
 
@@ -92,20 +93,17 @@ app.post('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
         res.send(result)
     })
 
+
+    
 app.get('/api/v1/viewproducts/:product_id', async(req,res) => {
-        const {product_id} = req.params;                      
+        const {product_id} = req.params; 
+
         const result = await products.showproducts(product_id);
-        res.send(result)
+        const rating = await products.getRating(product_id)
+        res.send({...result,rating})
+        
     })
     
-
-app.post('/api/v1/rating_products',auth.authenticateToken, async(req,res) => {
-    const data = req.body                                 //rating
-    const result = await products.rateproduct(data)
-    res.send(result)
-    })
-
-
 
 app.get('/api/v1/profile',auth.authenticateToken, async(req,res) => {
     const id = userid[0].id
@@ -139,6 +137,17 @@ app.get('/api/v1/contact_us', (req,res) => {
 app.get('/api/v1/featured_products', async (req,res) => {
     const result = await products.listproducts()
     res.send(result)
+
+})
+
+
+app.get('/api/v1/related_products/:id', async (req,res) => {
+    const {id} = req.params;
+    const result = await products.showproducts(id)
+
+    const relatedProductList = await products.relatedproducts(result.category, id);
+    res.send(relatedProductList)
+    
 
 })
 
