@@ -6,6 +6,8 @@ require('dotenv').config()
 
 
 const signup = async(usertesting)=> {
+
+    console.log(usertesting)
     
     try {
         const salt = await bcrypt.genSalt();

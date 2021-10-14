@@ -36,6 +36,7 @@ res.send(req.body)
 app.post('/api/v1/signup', async(req,res) => {
     try {
     const usertesting = req.body
+    console.log(req.body)
     const result = await auth.signup(usertesting)
     res.send(result)
     }catch{
@@ -97,7 +98,6 @@ app.post('/api/v1/searchproducts',auth.authenticateToken, async(req,res) => {
     
 app.get('/api/v1/viewproducts/:product_id', async(req,res) => {
         const {product_id} = req.params; 
-
         const result = await products.showproducts(product_id);
         const rating = await products.getRating(product_id)
         res.send({...result,rating})
@@ -134,11 +134,18 @@ app.get('/api/v1/contact_us', (req,res) => {
     })
 
 
+    
+
 app.get('/api/v1/featured_products', async (req,res) => {
     const result = await products.listproducts()
     res.send(result)
 
 })
+
+
+
+
+
 
 
 app.get('/api/v1/related_products/:id', async (req,res) => {
