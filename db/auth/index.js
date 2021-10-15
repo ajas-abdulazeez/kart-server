@@ -1,8 +1,8 @@
 
-const crud = require("../crud");
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const crud = require("../crud");//for writiing bacckend code 
+const bcrypt = require('bcrypt');//for encryption
+const jwt = require('jsonwebtoken')//token genertion a hash value
+require('dotenv').config()//?
 
 
 const signup = async(usertesting)=> {
@@ -36,7 +36,7 @@ const signin = async(user_data) =>{
     const username = user_data.username
     const user = {name:username}
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-
+//?
     try{
 
         let usercheck = await crud.selectData('users', {
@@ -58,7 +58,7 @@ const signin = async(user_data) =>{
                 if (await bcrypt.compare(user_data.password , usercheck[0].password)){
                     console.log("login success")
                     return{accessToken : accessToken, id:usercheck[0].user_id ,data:"login success"}
-                    
+                    //?
                     }
                 
                 else {
@@ -84,7 +84,7 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      console.log(err)
+      console.log(err)//?
       if (err) return res.sendStatus(403)
       console.log(user)
       req.user = user
