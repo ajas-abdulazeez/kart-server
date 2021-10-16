@@ -43,7 +43,7 @@ const selectSortedData = (tableName, options = { fields: [], filteringConditions
 
     return db(tableName)
             .select(fields)
-            .where(builder => {
+            .where(builder => { //?
                 filteringConditions.forEach(condition => {
                     builder.where(...condition)
                 });
